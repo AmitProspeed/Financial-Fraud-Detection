@@ -1,1 +1,274 @@
+<!DOCTYPE html>
+    <html lang="en" itemscope itemtype="http://schema.org/Project">
 
+        <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+            <title>Stout_Case_Study</title>
+    
+            <meta name="author" content="Amit Baran Roy">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+            <meta name="title" property='og:title' content='Amit Baran Roy'/>
+            <meta name="image" property='og:image' content='images/amit_profile_circle_3.png'/>
+            <meta name="url" property='og:url' content='http://www.amitbaranroy.com/Financial-Fraud-Detection/'/>
+            
+            <!--link rel="stylesheet" type="text/css" href="stylesheet.css"-->
+            <!--link rel="icon" type="image/png" href="images/cu.ico"-->
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+            <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+
+            <!--link rel="stylesheet" href="/css/style.css"-->
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <!--link rel="shortcut icon" href="/img/web-icon.ico" type="image/x-icon"-->
+            <meta name="theme-color" content="#0091E4">
+            <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=PT+Sans:700' rel='stylesheet' type='text/css'>
+            <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+        </head>
+
+        <style>
+            .main_container{
+                margin: 40px;
+            }
+            img {
+                width: 100%;
+                max-width: fit-content;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .text{
+                margin-top: 15px;
+            }
+            .alternate-font {
+                font-family:"Arvo";
+                font-weight: bold;
+            }
+            .h2alternate{
+                font-family:"Roboto Slab";
+                font-weight: bold;
+            }
+        </style>
+
+        <body>
+            <div class="container-fluid main_container">
+                <h1 class="alternate-font"> Case Study 1: Financial Fraud Detection using PaySim synthetic financial dataset</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="data/1.1.JPG" />
+                        <figcaption style="text-align:center;">Top 10 entries of the dataset</figcaption>
+                        <img src="data/1.2.JPG" style="margin-top: 80px; width: 400px;" />
+                    </div>
+                    <div class="text col-md-6">
+                        <p>We are given a synthetic financial dataset generated using a simulator called PaySim in which some of the transactions are marked as fraudulent. Our task is to analyze the dataset by performing exploratory data analysis and finally train a suitable model to predict fraudulent financial transactions.
+
+                        <br><br>The dataset consists of almost 6.3 million rows of transacional data having 11 columns. The dataset is simulated version of real transactions extracted from one month of financial logs from a mobile money service implemented in an African country. Also, there are no missing values in the dataset.
+                        <br><b>Dataset:</b> <a href="https://www.kaggle.com/ntnu-testimon/paysim1" target="_blank">https://www.kaggle.com/ntnu-testimon/paysim1</a></p>
+                    
+                        <p>To explain the data, we have the following columns:-</p>
+                        <ul>
+                            <li><b>Step:-</b> This represents an unit of time equal to 1 hr in real world. There are total 30days (744 steps) of simulation.</li>
+
+                            <li><b>Type:-</b> There are 5 types of transaction- CASH-IN, CASH-OUT, DEBIT, PAYMENT and TRANSFER.</li>
+
+                            <li><b>Amount:-</b> The total amount of transaction that happened in local currency.</li>
+
+                            <li><b>nameOrig:-</b> Name of the customer who started the transaction.</li>
+
+                            <li><b>oldbalanceOrg:-</b> Initial balance before the transaction at origin.</li>
+
+                            <li><b>newbalanceOrig:-</b> New balance after the transaction at origin.</li>
+
+                            <li><b>nameDest:-</b> Customer who is the recipient of the transaction.</li>
+
+                            <li><b>oldbalanceDest:-</b> Initial balance before the transaction at destination.</li>
+
+                            <li><b>newbalanceDest:-</b> New balance after the transaction at destination.</li>
+
+                            A thing to note is that there is no information for customers whose name start with M (Merchants).
+
+                            <li><b>isFraud:-</b> This variable marks whether a transaction is fraud or not.</li>
+
+                            <li><b>isFlaggedFraud:-</b> This variable denotes whether the business model was able to flag a transaction as fraud or not. An illegal attempt in this dataset is an attempt to transfer more than 200,000 in a single transaction.</li>
+                        </ul>
+                        <b>Issues with the dataset:</b>
+                        <ol>
+                            <li>The main issue with the dataset is that it is highly imbalanced. The positive class outnumbers the negative class by a lot. We will need to account for this imbalanced data while training later.</li>
+
+                            <li>The variable isFlaggedFraud is not very useful as it doesn't quite relate with any other parameters. It appears to be true in only 16 transactions out of 6 million entries and doesn't add much value. Also, in some places the variable is very inconsistent with respect to its definition; where it said the flag should be set to true for a transaction more than 200,000 but it's not.</li>
+
+                            <li>Finally, the dataset is sometimes inconsistent with respect to the transaction data. For example, in the above sample we can see for the 3rd transaction, 181.0 amount was Cashed Out but the transactional amount is not reflected at the destination column.</li>
+                        </ol>
+                        <p style="text-align:center;"><b><i>Number of times isFlaggedFraud is set: 16</i></b></p>
+                        <p style="text-align:center;"><b><i>Max amount transacted when isFlaggedFraud not set: 92445516.64</i></b></p>
+                    </div>
+                </div>
+
+                <h2 class="h2alternate">Visualizations</h2>
+                <div class="row">
+                    <div class="text col-md-6">
+                        <p style="margin-left:25px;"><b><u>1. Types of Transactions</u></b></p>
+                        <img src="data/1.3.JPG" style="width:300px;"/>
+                        <p style="text-align:center;">We can observe that the most common transaction types are the CASH_OUT and PAYMENT modes.</p>
+                    </div>
+                    <div class="text col-md-6">
+                        <p style="margin-left:25px;"><b><u>2. Types of transactions where isFraud is True</u></b></p>
+                        <img src="data/1.4.JPG" style="width:380px;" />
+                        <p style="text-align:center;">We can observe that the fraudulent transactions happens only with the CASH_OUT and TRANSFER modes and hence, we are interested in these two types only for fraud prediction.</p>
+                        <br><br><br>
+                    </div>
+                    <div class="text col-md-6">
+                        <p style="margin-left:25px;"><b><u>3. Amount vs Time for Fraudulent/Genuine transactions</u></b></p>
+                        <img src="data/1.5.JPG" />
+                        <p style="text-align:center;">We can observe that fraudulent transactions are capped at 10 million currency units but genuine transactions exceed over 92 million units.</p>
+                    </div>
+                    <div class="text col-md-6">
+                        <p style="margin-left:25px;"><b><u>4. Number of Fraud/genuine transactions per time step</u></b></p>
+                        <img src="data/1.6.JPG" />
+                        <p style="text-align:center;">We can see that fraudulent transactions happens at a constant rate through out the month but genuine transactions has no such pattern.</p>
+                    </div>
+                    <div class="text col-md-6">
+                        <p style="margin-left:25px;"><b><u>5. Old Balance in origin vs destination accounts</u></b></p>
+                        <img src="data/1.7.JPG" />
+                        <p style="text-align:center;">From the above, we can see that for fraudulent transactions, the old balance in origin account is significantly higher thant the old balance in destination account. This shows that money is being stolen from a richer account to a new/poor account.</p>
+                    </div>
+                    <div class="text col-md-6">
+                        <img src="data/1.8.JPG" style="margin-top: 40px;"/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="h2alternate">Feature Engineering and Data Cleansing</h2>
+                        <ul>
+                            <li>We have seen that there are no null values in the dataset. But there are lot of zeros which we can assume as being the static fill value of any missing data.</li>
+
+                            <li>For the first step of data cleaning, we will need to keep only the types 'CASH_OUT' and 'TRANSFER' as they are the only types with fraudulent transactions.</li>
+                            
+                            <li>Secondly, we need to one hot encode the 'type' data so that we get a 0 or 1 encoding from the corresponding string representations.</li>
+                            
+                            <li>Thirdly, we also add a feature 'hourOfDay' to keep note of the time when fraudulent transactions happen. This is because we saw above the genuine transactions doesnt happen always but fraud transactions occurs at a constant rate.</li>
+                            
+                            <li>Finally, we are adding two new features that is important towards extracting the best results from the ML algorithms: 'errorBalanceOrig' and 'errorBalanceDest'. These features denotes the respective error values between origin/destination balance values.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-12">
+                        <h2 class="h2alternate">Models</h2>
+                        <ul>
+                            <li><b>Random Forests:-</b> The reason for choosing random forests is that weights can be assigned to majority class to reduce the bias towards that class. Since our data is imbalanced and more skewed towards the positive class (non fraud), this model works well here.</li>
+                            <li><b>Gradient Boosting (XGB):-</b> This model is similar to random forests with an additional advantage being it pools the results from multiple decision trees generated sequentially (as compared to parallely in Random Forests). Hence, the model is bit slower but it is more accurate.</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="h2alternate">Results</h2>
+                        <img src="data/1.9.JPG" />
+                        <p style="text-align:center;"><i>Confusion matrix for Random Forest Model</i></p>
+                    </div>
+                    <div class="col-md-6" style="margin-top:55px;">
+                        <img src="data/1.10.JPG" />
+                        <p style="text-align:center;"><i>Confusion matrix for extreme Gradient Boosting (XGB) Trees</i></p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            To compare the performances of both the models, we need to compare their confusion matrices.</p>
+
+                            <p style="text-align:center;"><b><i>Number of valid transactions labelled as fraudulent by Random Forest: 29</i>
+</b>
+</p>                            <p style="text-align:center;"><b><i>Number of valid transactions labelled as fraudulent by XGB trees: 12817</i></b></p>
+
+                            <p style="text-align:center;"><b><i>Number of fraud transactions labelled as valid by Random Forest: 392 </i></b></p>
+
+                            <p style="text-align:center;"><b><i>Number of fraud transactions labelled as valid by XGB trees: 23</i></b></p>
+
+                            <p>The better model is dependent on which of the above result is acceptable to us. According to me, the number of valid transactions labelled as fraudulent by XGB trees is way high. Therefore, according to me, Random Forests is the superior model here.
+
+We have also computed the AUC (Area Under Curve) to compare the performance where the XGB model has worked better. The curve in Area Under Curve is a plot of the true positive rates (in our case, the proportion of valid transactions labelled as valid) against the false positive rate (in our case, the proportion of fraudulent transactions labelled as valid). The curve is also known as the Receiver Operating Characteristic Curve or ROC.
+
+The plot of ROC curve can be seen below.
+                        </p>
+                        <img src="data/1.11.JPG" style="margin-left: 490px;width: 550px;"/>
+                        <br>
+                        <img src="data/1.12.JPG" style="width: 850px;"/>
+                        <p>
+                            As said earlier, we can see that the <b>'errorBalanceOrg'</b> feature has the highest importance because it denotes the differences between net origin balance and net destination balance which is most accurately related to the transaction being flagged as fraud or not.</p>
+
+                        <p><b>Improvement:</b> We can improve our results by also looking for approaches like undersampling the majority class or oversampling the minority class (SMOTE-preffered) and then use native classifiers like Logistic Regression on the balanced data.
+                        </p>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <h1 class="alternate-font"> Case Study 2: Customer Revenue dataset</h1>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <p><b>Unique years: 2015, 2016, 2017</b></p>
+                        <ol>
+                            <li><b>Total revenue for current year</b><br>
+                                <p style="margin-left: 30px;">Total revenue for year <b>2015</b>: 29036749.19</p>
+                                <p style="margin-left: 30px;">Total revenue for year <b>2016</b>: 25730943.59</p>
+                                <p style="margin-left: 30px;">Total revenue for year <b>2017</b>: 31417495.03</p>
+                            </li>
+                            <li><b>New Customer Revenue</b><br>
+                                <p style="margin-left: 30px;">New customer revenue for year <b>2015</b>: 29036749.19</p>
+                                <p style="margin-left: 30px;">New customer revenue for year <b>2016</b>: 18245491.01</p>
+                                <p style="margin-left: 30px;">New customer revenue for year <b>2017</b>: 28776235.04</p>
+                            </li>
+                            <li><b>Existing Customer Growth</b><br>
+                                <p style="margin-left: 30px;">Existing customer growth for year <b>2015</b>: 0.0</p>
+                                <p style="margin-left: 30px;">Existing customer growth for year <b>2016</b>: 7485452.58</p>
+                                <p style="margin-left: 30px;">Existing customer growth for year <b>2017</b>: -4844192.59</p>
+                            </li>
+                            <li><b>Revenue lost from attrition</b><br>
+                                <p style="margin-left: 30px;">Revenue lost from attrition for year <b>2015</b>: 0.0</p>
+                                <p style="margin-left: 30px;">Revenue lost from attrition for year <b>2016</b>: 21571632.07</p>
+                                <p style="margin-left: 30px;">Revenue lost from attrition for year <b>2017</b>: 23110294.94</p>
+                            </li>
+                            <li><b>Existing Customer Revenue Current Year</b><br>
+                                <p style="margin-left: 30px;">Existing Customer Revenue for year <b>2015</b>: 0.0</p>
+                                <p style="margin-left: 30px;">Existing Customer Revenue for year <b>2016</b>: 7485452.58</p>
+                                <p style="margin-left: 30px;">Existing Customer Revenue for year <b>2017</b>: 2641259.99</p>
+                            </li>
+                            <li><b>Existing Customer Revenue Prior Year</b><br>
+                                <p style="margin-left: 30px;">Existing Customer Revenue Prior Year <b>2015</b>: 0.0</p>
+                                <p style="margin-left: 30px;">Existing Customer Revenue Prior Year <b>2016</b>: 0.0</p>
+                                <p style="margin-left: 30px;">Existing Customer Revenue Prior Year <b>2017</b>: 7485452.58</p>
+                                <p style="margin-left: 30px;">Existing Customer Revenue Prior Year <b>2018</b>: 2641259.99</p>
+                            </li>
+                            <li><b>Total Customers Current Year</b><br>
+                                <p style="margin-left: 30px;">Total Customers for year <b>2015</b>: 231294</p>
+                                <p style="margin-left: 30px;">Total Customers for year <b>2016</b>: 204646</p>
+                                <p style="margin-left: 30px;">Total Customers for year <b>2017</b>: 249987</p>
+                            </li>
+                            <li><b>Total Customers Previous Year</b><br>
+                                <p style="margin-left: 30px;">Total Previous Year Customers for year <b>2015</b>: 0</p>
+                                <p style="margin-left: 30px;">Total Previous Year Customers for year <b>2016</b>: 231294</p>
+                                <p style="margin-left: 30px;">Total Previous Year Customers for year <b>2017</b>: 204646</p>
+                                <p style="margin-left: 30px;">Total Previous Year Customers for year <b>2018</b>: 249987</p>
+                            </li>
+                            <li><b>New Customers</b><br>
+                                <p style="margin-left: 30px;">Total New Customers for year <b>2015</b>: 231294</p>
+                                <p style="margin-left: 30px;">Total New Customers for year <b>2016</b>: 145062</p>
+                                <p style="margin-left: 30px;">Total New Customers for year <b>2017</b>: 229028</p>
+                            </li>
+                            <li><b>Lost Customers</b><br>
+                                <p style="margin-left: 30px;">Total Lost Customers for year <b>2015</b>: 0</p>
+                                <p style="margin-left: 30px;">Total Lost Customers for year <b>2016</b>: 171710</p>
+                                <p style="margin-left: 30px;">Total Lost Customers for year <b>2017</b>: 183687</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            
+            
+            
+            </div> 
+
+
+
+
+
+        </body>
+
+    </html>
